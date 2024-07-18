@@ -96,7 +96,7 @@ class ProductRepository:
         try:
             link = link.strip().lower()
 
-            self.cursor.execute("SELECT * FROM hepsiburadaProducts WHERE lower(trim(link)) = %s", (link,))
+            self.cursor.execute("SELECT * FROM Products WHERE lower(trim(link)) = %s", (link,))
             row = self.cursor.fetchone()
 
             if row:
@@ -108,7 +108,7 @@ class ProductRepository:
 
     def update_product(self, product):
         try:
-            self.cursor.execute('''UPDATE hepsiburadaProducts SET Title=%s, Link=%s, Price=%s, UpdatedAt=%s, IsDeleted=%s
+            self.cursor.execute('''UPDATE Products SET Title=%s, Link=%s, Price=%s, UpdatedAt=%s, IsDeleted=%s
                                     WHERE Id=%s''',
                                 (product.title, product.link, product.price, datetime.now(),
                                 product.is_deleted, product.id))
@@ -119,7 +119,7 @@ class ProductRepository:
             self.conn.rollback()  # Rollback changes if an error occurs
 
     def delete_product(self, product_id):
-        self.cursor.execute("DELETE FROM hepsiburadaProducts WHERE Id=%s", (product_id,))
+        self.cursor.execute("DELETE FROM Products WHERE Id=%s", (product_id,))
         self.conn.commit()
 
     def _row_to_product(self, row):
