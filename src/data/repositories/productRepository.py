@@ -8,7 +8,7 @@ class ProductRepository:
     def __init__(self):
         db_params = {
             'host': 'localhost',
-            'database': 'trendyol-takip',
+            'database': 'hepsiburada-takip',
             'user': 'trendyol',
             'password': 'trendyol-bot-1234321'
         }
@@ -18,7 +18,7 @@ class ProductRepository:
         self._create_table_if_not_exists()
 
     def _create_table_if_not_exists(self):
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS hepsiburadaProducts (
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS Products (
                                 Id TEXT PRIMARY KEY,
                                 Title TEXT,
                                 Link TEXT,
@@ -30,7 +30,7 @@ class ProductRepository:
         self.conn.commit()
 
     def add_product(self, product):
-        self.cursor.execute('''INSERT INTO hepsiburadaProducts (Id, Title, Link, Price, CreatedAt, UpdatedAt, IsDeleted)
+        self.cursor.execute('''INSERT INTO Products (Id, Title, Link, Price, CreatedAt, UpdatedAt, IsDeleted)
                                 VALUES (%s, %s, %s, %s, %s, %s, %s)''',
                             (product.id, product.title, product.link, product.price,
                              product.created_at, product.updated_at, product.is_deleted))
@@ -76,7 +76,7 @@ class ProductRepository:
 
     def get_all_product_links(self):
         try:
-            self.cursor.execute("SELECT Link FROM hepsiburadaProducts")
+            self.cursor.execute("SELECT Link FROM Products")
             rows = self.cursor.fetchall()
             links = [row[0] for row in rows]
             return links
@@ -84,7 +84,7 @@ class ProductRepository:
             print("Error occurred during SQL query:", e)
 
     def get_product_by_id(self, product_id):
-        self.cursor.execute("SELECT * FROM hepsiburadaProducts WHERE Id=%s", (product_id,))
+        self.cursor.execute("SELECT * FROM Products WHERE Id=%s", (product_id,))
         row = self.cursor.fetchone()
         if row:
             return self._row_to_product(row)
